@@ -2,6 +2,7 @@ import React from "react";
 import exit from "../assets/exit.png";
 import "../App.css";
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../api";
 import ChangePassword from "../components/ChangePassword";
 import ChangeUserName from "../components/ChangeUserName";
@@ -13,6 +14,7 @@ const Settings = () => {
   const [profilePic, setProfilePic] = useState("https://res.cloudinary.com/ddvcavhob/image/upload/v1751982033/boy_nhzrc3.png");
   const [showModal, setShowModal] = useState(false);
   const [userShowModal,setUserShowModal] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user?.profilePic) {
@@ -23,7 +25,8 @@ const Settings = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-    window.location.href = "/login";
+    navigate("/");
+    
   };
 
   const handleImageChange = async (e) => {
