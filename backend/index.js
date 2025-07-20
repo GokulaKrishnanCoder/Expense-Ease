@@ -14,6 +14,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 dotenv.config();
 
+app.get('/', (req, res) => {
+  res.send('Server is up and running!');
+});
+
+
 app.use('/api/transactions',router)
 app.use('/api/auth',authrouter)
 
