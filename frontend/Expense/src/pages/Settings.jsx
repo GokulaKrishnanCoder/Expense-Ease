@@ -10,7 +10,7 @@ const CLOUDINARY_BASE =
   "https://api.cloudinary.com/v1_1/ddvcavhob/image/upload";
 
 const Settings = () => {
-  const [profilePic, setProfilePic] = useState();
+  const [profilePic, setProfilePic] = useState("https://res.cloudinary.com/ddvcavhob/image/upload/v1751982033/boy_nhzrc3.png");
   const [showModal, setShowModal] = useState(false);
   const [userShowModal,setUserShowModal] = useState(false);
   useEffect(() => {
