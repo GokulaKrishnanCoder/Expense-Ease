@@ -33,7 +33,7 @@ const Sidebar = () => {
   const [userName,setUserName] = useState("");
 
   const user = JSON.parse(localStorage.getItem("user"));
-  const [profile, setProfile] = useState(user.profilePic);
+  const [profile, setProfile] = useState(user?.profilePic || "https://res.cloudinary.com/ddvcavhob/image/upload/v1751982033/boy_nhzrc3.png");
 
   const menuItems = ["Dashboard", "Expenses", "Summary", "Settings"];
 
