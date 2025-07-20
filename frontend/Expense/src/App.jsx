@@ -9,11 +9,11 @@ import "react-toastify/dist/ReactToastify.css";
 import {BrowserRouter as Router,Routes,Route,Navigate} from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
-const CLIENT_ID = import.meta.env.CLIENT_ID ;
+const clientId = import.meta.env.VITE_CLIENT_ID ;
 const App = () => {
   return (
     <Router>
-      <GoogleOAuthProvider clientId={CLIENT_ID}>
+      <GoogleOAuthProvider clientId={clientId}>
         <ToastContainer/>
       <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
