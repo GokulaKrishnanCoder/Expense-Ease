@@ -125,10 +125,10 @@ const ThisMonth = () => {
 
   return (
     <div
-      className="card mx-1 p-md-4 w-100 d-flex align-items-center justify-content-center"
+      className="card mx-1 p-3 d-flex align-items-center justify-content-center"
       style={{ height: "300px" }}
     >
-      <h5>{monthName} Month Transactions</h5>
+      <h5 className="">{monthName} Month Transactions</h5>
       <Doughnut data={doubleDoughnutData} options={options} />
     </div>
   );

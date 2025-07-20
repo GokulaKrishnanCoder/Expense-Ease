@@ -264,7 +264,7 @@ const Summary = () => {
         <div className="col-12 col-md-3 d-flex">
           <div className="w-100 h-100 d-flex flex-column">
             <h5 className="font-semibold mb-2">Income By Titles</h5>
-            <div className="card p-md-2 flex-fill d-flex flex-column">
+            <div className="card p-2 p-md-1 flex-fill d-flex flex-column">
               <div
                 style={{
                   flex: 1,
@@ -291,7 +291,7 @@ const Summary = () => {
         <div className="col-12 col-md-3 d-flex">
           <div className="w-100 h-100 d-flex flex-column">
             <h5 className="font-semibold mb-2">Expense By Titles</h5>
-            <div className="card p-md-2  flex-fill d-flex flex-column">
+            <div className="card p-2 p-md-1 flex-fill d-flex flex-column">
               <div
                 style={{
                   flex: 1,

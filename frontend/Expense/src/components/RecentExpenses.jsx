@@ -29,13 +29,12 @@ const RecentExpenses = () => {
             <li className="list-group-item h-100" key={t._id}>
               <div className="row align-items-center h-100">
                 {/* Title */}
-                <div className=" fw-semibold col-3 px-1   h-100">
+                <div className=" fw-semibold col-4 px-1   h-100">
                   {t.title}
                 </div>
-
                 {/* Amount */}
                 <div
-                  className={`col-4 h-100  text-end ${
+                  className={`col-3 h-100 px-0  text-end ${
                     t.type === "Income" ? "text-success" : "text-danger"
                   }`}
                 >
