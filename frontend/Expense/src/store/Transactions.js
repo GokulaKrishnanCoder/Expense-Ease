@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import { create } from "zustand";
 import UpdateTransaction from "../pages/UpdateTransaction";
+import API from "../api";
 
 export const useTransactions = create((set) => ({
   Transactions: [],
+  
 
   setTransactions: (Transactions) => set({ Transactions }),
 
@@ -15,23 +17,17 @@ export const useTransactions = create((set) => ({
     ) {
       return { success: false, message: "Please fill all fields" };
     }
-    const res = await fetch("/api/transactions/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newTransaction),
-    });
-    const data = await res.json();
+    const res = await API.post("/transactions/add", newTransaction);
+    const data = res.data;
     set((state) => ({ Transactions: [...state.Transactions, data] }));
+   
     return { success: true, message: "Successfully added" };
   },
   fetchTransactions: async () => {
     try {
-      const res = await fetch("/api/transactions/");
+      const res = await API.get("/transactions/get");
 
-      const data = await res.json();
-      console.log(data);
+      const data = res.data;
       set({ Transactions: Array.isArray(data) ? data : [] });
     } catch (error) {
       console.log(error.message);
@@ -40,10 +36,8 @@ export const useTransactions = create((set) => ({
   deleteTransaction: async (tid) => {
     try {
       console.log(tid);
-      const res = await fetch(`/api/transactions/delete/${tid}`, {
-        method: "DELETE",
-      });
-      const data = await res.json();
+      const res = await API.delete(`/transactions/delete/${tid}`);
+      const data = res.data;
       set((state) => ({
         Transactions: state.Transactions.filter((T) => T._id != tid),
       }));
@@ -53,14 +47,11 @@ export const useTransactions = create((set) => ({
     }
   },
   updateTransaction: async (tid, updatedTransaction) => {
-    const res = await fetch(`/api/transactions/update/${tid}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedTransaction),
-    });
-    const data = await res.json();
+    const res = await API.put(
+      `/transactions/update/${tid}`,
+      updatedTransaction
+    );
+    const data = res.data;
     if (!data || !data._id) {
       return { success: false, message: data.message };
     }
@@ -70,3 +61,4 @@ export const useTransactions = create((set) => ({
     return { success: true, message: "Updated Successfully" };
   },
 }));
+

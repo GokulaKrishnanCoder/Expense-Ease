@@ -1,52 +1,68 @@
-import Transaction from '../models/Transaction.model.js';
+import Transaction from "../models/Transaction.model.js";
 
 export const getTransactions = async (req, res) => {
-    try {
-        const transactions = await Transaction.find();
-        res.status(200).json(transactions);
-    } catch (error) { 
-        console.error("Error fetching transactions:", error);
-        res.status(500).json({ message: "Server error" });
-    }  
-}
+  try {
+    const query = {createdBy: req.user._id};
+    const transactions = await Transaction.find(query);
+    res.status(200).json(transactions);
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 export const addTransaction = async (req, res) => {
-    const {title,amount,type,date} = req.body;
-    try {
-        const newTransaction = new Transaction({title, amount, type, date});
-        await newTransaction.save();
-        res.status(201).json(newTransaction);
-    } catch (error) {
-        console.error("Error adding transaction:", error);
-        res.status(500).json({ message: "Server error" });
-    }};
+  const { title, amount, type, date } = req.body;
+  try {
+    const newTransaction = await Transaction.create({
+      title,
+      amount,
+      type,
+      date,
+      createdBy: req.user._id,
+      createdmail: req.user.email,
+    });
+   
+    res.status(201).json(newTransaction);
+  } catch (error) {
+    console.error("Error adding transaction:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 export const deleteTransaction = async (req, res) => {
-    const {id} = req.params;
-    try {
-        const deletedTransaction = await Transaction.findByIdAndDelete(id);
-        if (!deletedTransaction) {
-            return res.status(404).json({ message: "Transaction not found" });
+  const { id } = req.params;
+  try {
+  
+        const trans = await Transaction.findById(id);
+        if(!trans) return res.status(404).json({message:"Transaction not found"});
+
+        if( trans.createdBy.toString() !== req.user._id.toString()){
+            return res.status(403).json({ message: 'Not allowed' });
         }
-        res.status(200).json({ message: "Transaction deleted successfully" });
-    } catch (error) {
-        console.error("Error deleting transaction:", error);
-        res.status(500).json({ message: "Server error" });
-    }
-}
+        await trans.deleteOne();
+        res.json({message:"Transaction Deleted"})
+  }catch(err){
+    res.status(400).json({message:"Delete failed"});
+  }
+};
 export const updateTransaction = async (req, res) => {
-    const {id} = req.params;
-    const {title, amount, type, date} = req.body;
-    try {
-        const updatedTransaction = await Transaction.findByIdAndUpdate(
-            id,
-            {title, amount, type, date},
-            {new: true}
-        );
-        if (!updatedTransaction) {
-            return res.status(404).json({ message: "Transaction not found" });
-        }
-        res.status(200).json(updatedTransaction);
-    } catch (error) {
-        console.error("Error updating transaction:", error);
-        res.status(500).json({ message: "Server error" });
+  const { id } = req.params;
+  const { title, amount, type, date } = req.body;
+  try {
+    const trans = await Transaction.findById(id);
+    if(!trans) return res.status(404).json({message:'Transaction not found'});
+    if(trans.createdBy.toString()!== req.user._id.toString()){
+        return res.status(403).json({ message: 'Not allowed' });
     }
-}
+    trans.title = title;
+    trans.amount = amount;
+    trans.type =type;
+    trans.date = date;
+    await trans.save();
+
+    res.json(trans);
+   
+  } catch (error) {
+    console.error("Error updating transaction:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};

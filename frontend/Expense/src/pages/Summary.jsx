@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTransactions } from "../store/Transactions";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import {
@@ -29,16 +29,30 @@ ChartJS.register(
 );
 
 const Summary = () => {
-  const { Transactions } = useTransactions();
+  const { Transactions, fetchTransactions } = useTransactions();
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedMonth, setSelectedMonth] = useState("None");
 
-  const income = Transactions.filter((t) => t.type === "income").reduce(
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
+  const FilteredTransactions = Transactions.filter((t) => {
+    const date = new Date();
+    const txyear = date.getFullYear();
+    const txmonth = date.getMonth() + 1;
+    if (selectedMonth != "None") {
+      return txyear === selectedYear && txmonth === Number(selectedMonth);
+    }
+    return txyear === selectedYear;
+  });
+
+  const income = FilteredTransactions.filter((t) => t.type === "Income").reduce(
     (sum, t) => sum + t.amount,
     0
   );
-  const expense = Transactions.filter((t) => t.type === "expense").reduce(
-    (sum, t) => sum + t.amount,
-    0
-  );
+  const expense = FilteredTransactions.filter(
+    (t) => t.type === "Expense"
+  ).reduce((sum, t) => sum + t.amount, 0);
 
   const BarData = {
     labels: ["Income", "Expense"],
@@ -51,17 +65,17 @@ const Summary = () => {
     ],
   };
   const dataByDate = {};
-  Transactions.forEach(({ date, type, amount }) => {
+  FilteredTransactions.forEach(({ date, type, amount }) => {
     const d = new Date(date).toISOString().split("T")[0];
     if (!dataByDate[d]) {
-      dataByDate[d] = { income: 0, expense: 0 };
+      dataByDate[d] = { Income: 0, Expense: 0 };
     }
     dataByDate[d][type] += amount;
   });
   const SortedDates = Object.keys(dataByDate).sort();
 
-  const incomeLine = SortedDates.map((date) => dataByDate[date].income);
-  const expenseLine = SortedDates.map((date) => dataByDate[date].expense);
+  const incomeLine = SortedDates.map((date) => dataByDate[date].Income);
+  const expenseLine = SortedDates.map((date) => dataByDate[date].Expense);
 
   const LineData = {
     labels: SortedDates,
@@ -85,23 +99,22 @@ const Summary = () => {
     ],
   };
   const incomeTitleMap = {};
-  Transactions.filter((t) => t.type === "income").forEach((t) => {
+  FilteredTransactions.filter((t) => t.type === "Income").forEach((t) => {
     incomeTitleMap[t.title] = (incomeTitleMap[t.title] || 0) + Number(t.amount);
   });
-  const backgroundColors = [
-    "#4caf50",
-    "#f44336",
-    "#2196f3",
-    "#ff9800",
-    "#9c27b0",
-    "#00bcd4",
-    "#e91e63",
-    "#8bc34a",
-    "#ffc107",
-    "#795548",
-    "#607d8b",
-    "#3f51b5",
-  ];
+
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  const backgroundColors = (length) => {
+    return Array.from({ length }, () => getRandomColor());
+  };
 
   const incomeLabels = Object.keys(incomeTitleMap);
   const incomeData = Object.values(incomeTitleMap);
@@ -112,14 +125,14 @@ const Summary = () => {
       {
         label: "Titles By Income ",
         data: incomeData,
-        backgroundColor: backgroundColors.slice(0, incomeLabels.length),
+        backgroundColor: backgroundColors(incomeLabels.length),
         borderWidth: 1,
       },
     ],
   };
 
   const expenseTitleMap = {};
-  Transactions.filter((t) => t.type === "expense").forEach((t) => {
+  FilteredTransactions.filter((t) => t.type === "Expense").forEach((t) => {
     expenseTitleMap[t.title] =
       (expenseTitleMap[t.title] || 0) + Number(t.amount);
   });
@@ -133,7 +146,7 @@ const Summary = () => {
       {
         label: "Titles By Expense",
         data: expenseData,
-        backgroundColor: backgroundColors.slice(0, expenseLabels.length),
+        backgroundColor: backgroundColors(expenseLabels.length),
         borderWidth: 1,
       },
     ],
@@ -147,70 +160,93 @@ const Summary = () => {
       },
     },
   };
+
   return (
-    <>
-      <h5 className="font-semibold">Transaction Trend By Date</h5>
+    <div className="container-fluid px-1">
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h5 className="font-semibold mb-0">Transaction Trend By Date</h5>
+        <div className="d-flex g-2 justify-content-between align-items-center">
+          <select
+            className="form-select w-auto"
+            value={selectedMonth}
+            onChange={(e) => setSelectedMonth(e.target.value)}
+          >
+            <option value="None">Month</option>
+            {[
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+            ].map((m, i) => (
+              <option key={i + 1} value={i + 1}>
+                {m}
+              </option>
+            ))}
+          </select>
+          <select
+            className="form-select w-auto ms-2"
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(Number(e.target.value))}
+          >
+            {Array.from({ length: 10 }, (_, i) => {
+              const year = new Date().getFullYear() - i;
+              return (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+      </div>
+
       <div
-        className="card p-2 mb-2 w-100"
+        className="card p-md-2 mb-2 "
         style={{
-          
           minWidth: 0,
-          height: 350, 
+          height: 350,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <Line data={LineData} options={{ maintainAspectRatio: false }} />
+        <Line
+          data={LineData}
+          options={{
+            scales: {
+              x: {
+                display: false,
+              },
+            },
+            maintainAspectRatio: false,
+          }}
+        />
       </div>
-      <div className="row g-4">
-        <div className="col-12 col-md-6 ">
-          <h5 className="font-semibold">Income vs Expense</h5>
-          <div
-            className="card p-2 chart-container"
-            style={{
-              height: 250,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Bar data={BarData} options={options} style={{ height: "100%" }} />
-          </div>
-        </div>
-        <div className="col-12 col-md-6 ">
-          <div className="row h-100">
-            <div className="col-12 col-md-6 mb-4 mb-md-0">
-              <h5 className="font-semibold">Income By Titles</h5>
+      <div className="row g-3 align-items-stretch">
+        {/* Bar Chart - 6/10 */}
+        <div className="col-12 col-md-6 d-flex">
+          <div className="w-100 h-100 d-flex flex-column">
+            <h5 className="font-semibold mb-2">Income vs Expense</h5>
+            <div className="card p-md-2 flex-fill d-flex flex-column">
               <div
-                className="card p-2 chart-container"
                 style={{
-                  height: 250,
+                  flex: 1,
+                  minHeight: 250,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                 }}
               >
-                <Pie
-                  data={IncomePieData}
-                  options={options}
-                  style={{ height: "100%" }}
-                />
-              </div>
-            </div>
-            <div className="col-12 col-md-6">
-              <h5 className="font-semibold">Expense By Titles</h5>
-              <div
-                className="card p-2 chart-container"
-                style={{
-                  height: 250,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Pie
-                  data={ExpensePieData}
+                <Bar
+                  data={BarData}
                   options={options}
                   style={{ height: "100%" }}
                 />
@@ -218,8 +254,62 @@ const Summary = () => {
             </div>
           </div>
         </div>
+        {/* Income Pie Chart - 2/10 */}
+        <div className="col-12 col-md-3 d-flex">
+          <div className="w-100 h-100 d-flex flex-column">
+            <h5 className="font-semibold mb-2">Income By Titles</h5>
+            <div className="card p-md-2 flex-fill d-flex flex-column">
+              <div
+                style={{
+                  flex: 1,
+                  minHeight: 120,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {FilteredTransactions && FilteredTransactions.length > 0 ? (
+                  <Pie
+                    data={IncomePieData}
+                    options={options}
+                    style={{ height: "100%" }}
+                  />
+                ) : (
+                  <span className="font-semibold">No Transactions found</span>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Expense Pie Chart - 2/10 */}
+        <div className="col-12 col-md-3 d-flex">
+          <div className="w-100 h-100 d-flex flex-column">
+            <h5 className="font-semibold mb-2">Expense By Titles</h5>
+            <div className="card p-md-2  flex-fill d-flex flex-column">
+              <div
+                style={{
+                  flex: 1,
+                  minHeight: 120,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {FilteredTransactions && FilteredTransactions.length > 0 ? (
+                  <Pie
+                    data={ExpensePieData}
+                    options={options}
+                    style={{ height: "100%" }}
+                  />
+                ) : (
+                  <span className="font-semibold">No Transactions found</span>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

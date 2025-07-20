@@ -82,8 +82,8 @@ const UpdateTransaction = ({ onClose ,transaction}) => {
                   required
                 >
                   <option value="">Select type</option>
-                  <option value="income">Income</option>
-                  <option value="expense">Expense</option>
+                  <option value="Income">Income</option>
+                  <option value="Expense">Expense</option>
                 </select>
               </div>
 

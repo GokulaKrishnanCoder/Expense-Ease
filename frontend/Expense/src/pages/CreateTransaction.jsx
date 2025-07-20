@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useTransactions } from "../store/Transactions";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, } from "react-router-dom";
 
 const CreateTransaction = ({ onClose }) => {
   const { createTransaction } = useTransactions();
   const navigate = useNavigate();
-  const location = useLocation();
+  
   const [trans, setTrans] = useState({
     title: "",
     amount: "",
@@ -17,7 +17,7 @@ const CreateTransaction = ({ onClose }) => {
     event.preventDefault();
     const res = await createTransaction(trans);
     console.log(res);
-    { }onClose();
+    onClose();
   };
   function handleChange(e) {
     const { name, value } = e.target;
@@ -34,7 +34,7 @@ const CreateTransaction = ({ onClose }) => {
       <div className="container ">
         <div className="row justify-content-center ">
           <div className="bg-light col-10 over">
-            <form className="p-4 ">
+            <form className="p-1 py-3 p-md-4 ">
               <div className="mb-3">
                 <label htmlFor="title" className="form-label">
                   Title
@@ -80,8 +80,8 @@ const CreateTransaction = ({ onClose }) => {
                   required
                 >
                   <option value="">Select type</option>
-                  <option value="income">Income</option>
-                  <option value="expense">Expense</option>
+                  <option value="Income">Income</option>
+                  <option value="Expense">Expense</option>
                 </select>
               </div>
 
@@ -96,6 +96,7 @@ const CreateTransaction = ({ onClose }) => {
                   name="date"
                   value={trans.date}
                   onChange={handleChange}
+                  placeholder="DD-MM-YYYY"
                   required
                 />
               </div>

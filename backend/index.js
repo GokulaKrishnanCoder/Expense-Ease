@@ -3,7 +3,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import router from './routes/Transactions.route.js';
-
+import authrouter from './routes/auth.router.js'
+import auth from './middleware/auth.js'
 
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(cors());
 dotenv.config();
 
 app.use('/api/transactions',router)
+app.use('/api/auth',authrouter)
 
 
 connectDB();

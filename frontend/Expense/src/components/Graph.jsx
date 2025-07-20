@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTransactions } from "../store/Transactions";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
@@ -8,6 +8,19 @@ import "../App.css";
 const Graph = () => {
   const { Transactions } = useTransactions();
   const dateCountMap = {};
+
+  const [startDate,serStartDate] = useState(new Date());
+
+  useEffect(()=>{
+    const today = new Date();
+    const newStartDate = new Date();
+    if(window.innerWidth<768){
+      newStartDate.setMonth(today.getMonth()-6);
+    }else{
+      newStartDate.setFullYear(today.getFullYear()-1);
+    }
+    serStartDate(newStartDate);
+  },[]);
   Transactions.forEach((t) => {
     const date = new Date(t.date).toISOString().split("T")[0];
     dateCountMap[date] = (dateCountMap[date] || 0) + 1;
@@ -18,18 +31,19 @@ const Graph = () => {
       count,
     };
   });
-  console.log(heatmapData);
+
+  
 
   const today = new Date();
-  const oneYearAgo = new Date();
-  oneYearAgo.setFullYear(today.getFullYear() - 1);
+  
+  
   return (
     <>
-      <div className="container p-0" >
-        <div className="card p-3 mb-4">
-          <h6 className="fw-semibold text-left mb-3">Transaction Heatmap</h6>
+      <div className="container-fluid px-1 mt-2">
+        <div className="card p-1 p-md-2 mb-4">
+          <h5 className="fw-semibold text-left mb-3">Transaction Heatmap</h5>
           <CalendarHeatmap
-            startDate={oneYearAgo}
+            startDate={startDate}
             endDate={today}
             values={heatmapData}
             classForValue={(value) => {
@@ -39,12 +53,20 @@ const Graph = () => {
               if (value.count < 10) return "color-scale-3";
               return "color-scale-4";
             }}
-            tooltipDataAttrs={(value) => ({
-              "data-tooltip-id": "heatmap-tooltip",
-              "data-tooltip-content": `${value.date} - ${
-                value.count || 0
-              } Transactions`,
-            })}
+            tooltipDataAttrs={(value) => {
+              if (!value || !value.date) {
+                return {
+                  "data-tooltip-id": "heatmap-tooltip",
+                  "data-tooltip-content": "",
+                };
+              }
+              return {
+                "data-tooltip-id": "heatmap-tooltip",
+                "data-tooltip-content": `${value.date} - ${
+                  value.count || 0
+                } Transactions`,
+              };
+            }}
             showWeekdayLabels={true}
           />
           <Tooltip id="heatmap-tooltip" />
