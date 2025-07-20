@@ -163,48 +163,54 @@ const Summary = () => {
 
   return (
     <div className="container-fluid px-1">
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h5 className="font-semibold mb-0">Transaction Trend By Date</h5>
-        <div className="d-flex g-2 justify-content-between align-items-center">
-          <select
-            className="form-select w-auto"
-            value={selectedMonth}
-            onChange={(e) => setSelectedMonth(e.target.value)}
-          >
-            <option value="None">Month</option>
-            {[
-              "January",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-              "August",
-              "September",
-              "October",
-              "November",
-              "December",
-            ].map((m, i) => (
-              <option key={i + 1} value={i + 1}>
-                {m}
-              </option>
-            ))}
-          </select>
-          <select
-            className="form-select w-auto ms-2"
-            value={selectedYear}
-            onChange={(e) => setSelectedYear(Number(e.target.value))}
-          >
-            {Array.from({ length: 10 }, (_, i) => {
-              const year = new Date().getFullYear() - i;
-              return (
-                <option key={year} value={year}>
-                  {year}
+      <div className="d-md-flex justify-content-between align-items-center mb-3">
+        <h5 className=" font-semibold mb-2">
+          Transaction Trend By Date
+        </h5>
+        <div className="d-flex row g-2 justify-content-between align-items-center">
+          <div className="col-6">
+            <select
+              className="form-select"
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+            >
+              <option value="None">Month</option>
+              {[
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+              ].map((m, i) => (
+                <option key={i + 1} value={i + 1}>
+                  {m}
                 </option>
-              );
-            })}
-          </select>
+              ))}
+            </select>
+          </div>
+          <div className="col-6 ">
+            <select
+              className="form-select"
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(Number(e.target.value))}
+            >
+              {Array.from({ length: 10 }, (_, i) => {
+                const year = new Date().getFullYear() - i;
+                return (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
         </div>
       </div>
 
