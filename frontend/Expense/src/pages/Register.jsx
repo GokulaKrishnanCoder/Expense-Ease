@@ -102,7 +102,7 @@ const Register = () => {
               Login
             </span>
           </p>
-          <div className="d-flex justify-content-center  mt-5">
+          <div className="d-flex justify-content-center   mt-5">
             <GoogleLogin
               onSuccess={async (credentialResponse) => {
                 const decoded = jwtDecode(credentialResponse.credential);
