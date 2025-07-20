@@ -159,7 +159,7 @@ const Sidebar = () => {
               </li>
             ))}
           </ul>
-          <div className="text-center fw-semibold mt-auto ">{user.email}</div>
+          <div className="text-center mt-auto " style={{fontSize:"12px"}}>{user.email}</div>
         </div>
         
 
