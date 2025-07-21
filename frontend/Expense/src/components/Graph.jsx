@@ -40,7 +40,7 @@ const Graph = () => {
   return (
     <>
       <div className="container-fluid px-1 mt-2">
-        <div className="card p-1 p-md-2 mb-4">
+        <div className="card p-1 p-md-2 mb-3">
           <h5 className="fw-semibold text-left mb-3">Transaction Heatmap</h5>
           <CalendarHeatmap
             startDate={startDate}
