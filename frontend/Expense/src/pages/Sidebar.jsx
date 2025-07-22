@@ -197,7 +197,7 @@ const Sidebar = () => {
                     <div className="col-12 col-md-8 d-flex">
                       <RecentExpenses />
                     </div>
-                    <div className=" col-12 col-md-4 d-flex">
+                    <div className=" col-12 col-md-4 d-flex align-items-center justify-content-center">
                       <ThisMonth />
                     </div>
                   </div>
