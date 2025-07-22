@@ -50,7 +50,7 @@ const Login = () => {
         <div className="row g-0" style={{ minHeight: "100vh" }}>
           {/* Left Column */}
           <div className="col-lg-4 col-sm-2 d-flex flex-column justify-content-center p-3 p-lg-4 bg-dark">
-            <h2 className="text-light fw-bold  mb-5">Expense Ease</h2>
+            <h2 className="text-light text-center fw-bold  mt-0 mb-5">Expense Ease</h2>
             <h4 className=" text-light fw-bold">Log in to your account</h4>
             <p className="text-light">
               Don't have an account?{" "}
@@ -89,7 +89,7 @@ const Login = () => {
               Or with email and password
             </div>
 
-            <form onSubmit={handleLogin}>
+            <form className="mx-3 mx-sm-3"onSubmit={handleLogin}>
               <div className="mb-3">
                 <input
                   type="email"

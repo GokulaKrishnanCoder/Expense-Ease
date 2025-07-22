@@ -9,13 +9,7 @@ const RecentExpenses = () => {
   }, [fetchTransactions]);
 
   const recentTransactions = Array.isArray(Transactions)
-    ? [...Transactions]
-        .sort(
-          (a, b) =>
-            new Date(b.updatedAt || b.createdAt) -
-            new Date(a.updatedAt || a.createdAt)
-        )
-        .slice(0, 5)
+    ? [...Transactions].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0,5)
     : [];
 
   return (
@@ -29,9 +23,7 @@ const RecentExpenses = () => {
             <li className="list-group-item h-100" key={t._id}>
               <div className="row align-items-center h-100">
                 {/* Title */}
-                <div className=" fw-semibold col-4 px-1   h-100">
-                  {t.title}
-                </div>
+                <div className=" fw-semibold col-4 px-1   h-100">{t.title}</div>
                 {/* Amount */}
                 <div
                   className={`col-3 h-100 px-0  text-end ${
@@ -43,7 +35,11 @@ const RecentExpenses = () => {
 
                 {/* Date */}
                 <div className="col-5 h-100 px-1 text-end">
-                  {new Date(t.date).toISOString().split("T")[0]}
+                  {
+                    new Date(t.createdAt || t.updatedAt || t.date)
+                      .toISOString()
+                      .split("T")[0]
+                  }
                 </div>
               </div>
             </li>

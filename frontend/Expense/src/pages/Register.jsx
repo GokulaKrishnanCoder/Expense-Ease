@@ -61,7 +61,7 @@ const Register = () => {
             <h5 className=" text-light fw-semi-bold"> Create a new account</h5>
           </div>
 
-          <form onSubmit={handleRegister}>
+          <form className="mx-3"onSubmit={handleRegister}>
             <div className="mb-3">
               <input
                 type="email"
