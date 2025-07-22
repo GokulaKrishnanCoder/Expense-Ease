@@ -49,7 +49,7 @@ const Login = () => {
       <div className="container-fluid  p-0">
         <div className="row g-0">
           {/* Left Column */}
-          <div className="col-lg-4 col-sm-2 d-flex flex-column justify-content-center p-3 p-lg-4 bg-dark">
+          <div className="col-12 col-md-6 col-lg-4 d-flex flex-column justify-content-center p-3 p-lg-4 bg-dark min-vh-100">
             <h2 className="text-light text-center fw-bold  mt-0 mb-5">Expense Ease</h2>
             <h4 className=" text-light fw-bold">Log in to your account</h4>
             <p className="text-light">
@@ -89,7 +89,7 @@ const Login = () => {
               Or with email and password
             </div>
 
-            <form className="mx-3 mx-sm-3"onSubmit={handleLogin}>
+            <form className="mx-3 mt-3 mb-4"onSubmit={handleLogin}>
               <div className="mb-3">
                 <input
                   type="email"
