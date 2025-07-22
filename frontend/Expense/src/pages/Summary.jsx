@@ -164,7 +164,7 @@ const Summary = () => {
   return (
     <div className="container-fluid px-1">
       <div className="d-md-flex justify-content-between align-items-center mb-3">
-        <h5 className=" font-semibold mb-2">
+        <h5 className=" mt-2 font-semibold mb-2">
           Transaction Trend By Date
         </h5>
         <div className="d-flex row g-2 justify-content-between align-items-center">

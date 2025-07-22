@@ -46,7 +46,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="container-fluid min-vh-100 p-0">
+      <div className="container-fluid  p-0">
         <div className="row g-0" style={{ minHeight: "100vh" }}>
           {/* Left Column */}
           <div className="col-lg-4 col-sm-2 d-flex flex-column justify-content-center p-3 p-lg-4 bg-dark">
