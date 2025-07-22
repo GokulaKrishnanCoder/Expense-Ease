@@ -45,99 +45,91 @@ const Login = () => {
   };
 
   return (
-    <>
-      <div className="container-fluid  p-0">
-        <div className="row g-0">
-          {/* Left Column */}
-          <div className="col-12 col-md-6 col-lg-4 d-flex flex-column justify-content-center p-3 p-lg-4 bg-dark min-vh-100">
-            <h2 className="text-light text-center fw-bold  mt-0 mb-5">Expense Ease</h2>
-            <h4 className=" text-light fw-bold">Log in to your account</h4>
-            <p className="text-light">
-              Don't have an account?{" "}
-              <span
-                className="text-light fw-semibold"
-                onClick={handleRegister}
-                style={{ cursor: "pointer" }}
-              >
-                Sign Up
-              </span>
-            </p>
+  <div className="container-fluid p-0">
+    <div className="row g-0 vh-100">
+      {/* Left Column */}
+      <div className="col-12 col-md-6 col-lg-4 d-flex flex-column justify-content-center p-4 bg-dark h-100 overflow-auto">
+        <h2 className="text-light text-center fw-bold mb-4">Expense Ease</h2>
+        <h4 className="text-light fw-bold">Log in to your account</h4>
+        <p className="text-light">
+          Don't have an account?{" "}
+          <span
+            className="text-light fw-semibold"
+            onClick={handleRegister}
+            style={{ cursor: "pointer" }}
+          >
+            Sign Up
+          </span>
+        </p>
 
-            <div className="d-flex justify-content-center mt-4 mb-3">
-              <GoogleLogin
-                onSuccess={async (credentialResponse) => {
-                  const decoded = jwtDecode(credentialResponse.credential);
-                  const email = decoded.email;
-                  try {
-                    const res = await API.post("/auth/googleRegister", {
-                      email,
-                    });
-                    localStorage.setItem("token", res.data.token);
-                    localStorage.setItem("user", JSON.stringify(res.data.user));
-                    navigate("/dashboard");
-                  } catch (err) {
-                    alert("Google Registration failed");
-                  }
-                }}
-                onError={() => {
-                  alert("Google Login Failed");
-                }}
-              />
-            </div>
+        <div className="d-flex justify-content-center mt-3 mb-3">
+          <GoogleLogin
+            onSuccess={async (credentialResponse) => {
+              const decoded = jwtDecode(credentialResponse.credential);
+              const email = decoded.email;
+              try {
+                const res = await API.post("/auth/googleRegister", { email });
+                localStorage.setItem("token", res.data.token);
+                localStorage.setItem("user", JSON.stringify(res.data.user));
+                navigate("/dashboard");
+              } catch (err) {
+                alert("Google Registration failed");
+              }
+            }}
+            onError={() => alert("Google Login Failed")}
+          />
+        </div>
 
-            <div className="text-light mb-3 mt-5">
-              Or with email and password
-            </div>
+        <div className="text-light mb-3">Or with email and password</div>
 
-            <form className="mx-3 mt-3 mb-4"onSubmit={handleLogin}>
-              <div className="mb-3">
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="mb-3">
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="btn text-light w-100"
-                style={{ backgroundColor: "#393E46" }}
-              >
-                Login
-              </button>
-            </form>
-          </div>
-
-          {/* Right Column */}
-          <div className="col-lg-8 d-none d-lg-flex ">
-            <img
-              src={bg}
-              alt="ExpenseEase"
-              style={{
-                width: "100%",
-                height: "100vh",
-                objectFit: "cover",
-              }}
+        <form className="mx-2" onSubmit={handleLogin}>
+          <div className="mb-3">
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
-        </div>
-      </div>
-    </>
-  );
-};
 
+          <div className="mb-3">
+            <input
+              type="password"
+              className="form-control"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="btn text-light w-100"
+            style={{ backgroundColor: "#393E46" }}
+          >
+            Login
+          </button>
+        </form>
+      </div>
+
+      {/* Right Column */}
+      <div className="col-lg-8 d-none d-lg-flex">
+        <img
+          src={bg}
+          alt="ExpenseEase"
+          style={{
+            width: "100%",
+            height: "100vh",
+            objectFit: "cover",
+          }}
+        />
+      </div>
+    </div>
+  </div>
+);
+
+}
 export default Login;
