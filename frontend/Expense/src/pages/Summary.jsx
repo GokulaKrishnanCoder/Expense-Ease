@@ -31,16 +31,16 @@ ChartJS.register(
 const Summary = () => {
   const { Transactions, fetchTransactions } = useTransactions();
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const [selectedMonth, setSelectedMonth] = useState("None");
+  const [selectedMonth, setSelectedMonth] = useState("");
 
   useEffect(() => {
     fetchTransactions();
   }, []);
   const FilteredTransactions = Transactions.filter((t) => {
-    const date = new Date();
+    const date = new Date(t.date);
     const txyear = date.getFullYear();
     const txmonth = date.getMonth() + 1;
-    if (selectedMonth != "None") {
+    if (selectedMonth) {
       return txyear === selectedYear && txmonth === Number(selectedMonth);
     }
     return txyear === selectedYear;
@@ -174,7 +174,7 @@ const Summary = () => {
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
             >
-              <option value="None">Month</option>
+              <option value="">Month</option>
               {[
                 "January",
                 "February",
