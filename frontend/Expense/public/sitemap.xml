@@ -6,9 +6,36 @@
     <priority>1.00</priority>
   </url>
   <url>
-    <loc>https://expenseease.app/about</loc>
+    <loc>https://expenseease.app/login</loc>
     <lastmod>2025-08-12</lastmod>
     <priority>0.80</priority>
   </url>
+    <url>
+        <loc>https://expenseease.app/register</loc>
+        <lastmod>2025-08-12</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://expenseease.app/expenses</loc>
+        <lastmod>2025-08-12</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://expenseease.app/summary</loc>
+        <lastmod>2025-08-12</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://expenseease.app/settings</loc>
+        <lastmod>2025-08-12</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://expenseease.app/dashboard</loc>
+        <lastmod>2025-08-12</lastmod>
+        <priority>0.80</priority>
+    </url>
+  
+
  
 </urlset>
