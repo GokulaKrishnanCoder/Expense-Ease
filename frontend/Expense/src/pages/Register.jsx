@@ -12,6 +12,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState();
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -61,27 +62,47 @@ const Register = () => {
             <h5 className=" text-light fw-semi-bold"> Create a new account</h5>
           </div>
 
-          <form className="mx-3"onSubmit={handleRegister}>
+          <form className="mx-3" onSubmit={handleRegister}>
             <div className="mb-3">
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <div className="input-group">
+                <span className="input-group-text bg-white">
+                  <i className="bi bi-envelope"></i>
+                </span>
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="Email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
             </div>
 
             <div className="mb-3">
-              <input
-                type="password"
-                className="form-control"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="input-group">
+                <span className="input-group-text bg-white">
+                  <i className="bi bi-lock"></i>
+                </span>
+                <input
+                  
+                  type="password"
+                  className="form-control"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <span
+                  className="input-group-text bg-white"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  <i
+                    className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}
+                  ></i>
+                </span>
+              </div>
             </div>
 
             <button

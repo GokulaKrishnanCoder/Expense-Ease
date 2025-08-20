@@ -183,3 +183,9 @@ input::placeholder {
   margin-top: 50px; /* height of the mobile-upbar */
   margin-bottom: 50px;
 }
+.input-group .form-control:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+ 
+}

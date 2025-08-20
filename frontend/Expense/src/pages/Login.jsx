@@ -10,6 +10,7 @@ import "../App.css";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = (e) => {
@@ -48,7 +49,9 @@ const Login = () => {
         <div className="col-12 col-lg-4 d-flex align-items-center justify-content-center p-4 bg-dark text-white">
           <div className="w-100" style={{ maxWidth: "350px" }}>
             <h2 className="fw-bold text-center mb-5">Expense Ease</h2>
-            <h5 className="fw-semibold text-center mb-3">Log in to your account</h5>
+            <h5 className="fw-semibold text-center mb-3">
+              Log in to your account
+            </h5>
             <p className="text-center mb-3">
               Don't have an account?{" "}
               <span
@@ -59,14 +62,15 @@ const Login = () => {
                 Sign Up
               </span>
             </p>
-
             <div className="d-flex justify-content-center mb-5">
               <GoogleLogin
                 onSuccess={async (credentialResponse) => {
                   const decoded = jwtDecode(credentialResponse.credential);
                   const email = decoded.email;
                   try {
-                    const res = await API.post("/auth/googleRegister", { email });
+                    const res = await API.post("/auth/googleRegister", {
+                      email,
+                    });
                     localStorage.setItem("token", res.data.token);
                     localStorage.setItem("user", JSON.stringify(res.data.user));
                     navigate("/dashboard");
@@ -77,32 +81,50 @@ const Login = () => {
                 onError={() => alert("Google Login Failed")}
               />
             </div>
-
             <div className="text-center mb-5">Or use email and password</div>
-
             <form onSubmit={handleLogin}>
               <div className="mb-3">
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
+                <div className="input-group">
+                  <span className="input-group-text bg-white">
+                    <i className="bi bi-envelope"></i>
+                  </span>
+                  <input
+                    type="email"
+                    className="form-control"
+                    placeholder="Email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
               </div>
 
               <div className="mb-3">
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
+                <div className="input-group">
+                  <span className="input-group-text bg-white">
+                    <i className="bi bi-lock"></i>
+                  </span>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="form-control"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <span
+                    className="input-group-text bg-white"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    <i
+                      className={`bi ${
+                        showPassword ? "bi-eye-slash" : "bi-eye"
+                      }`}
+                    ></i>
+                  </span>
+                </div>
               </div>
-
               <div className="d-grid">
                 <button
                   type="submit"
@@ -113,6 +135,7 @@ const Login = () => {
                 </button>
               </div>
             </form>
+            
           </div>
         </div>
 
