@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://expenseease.app/sitemap.xml
+Allow: /logo1.png
