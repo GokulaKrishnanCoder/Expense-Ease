@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
+import { Mosaic } from "react-loading-indicators";
 import bg from "../assets/bg.jpg";
+
 import API from "../api";
 import "../App.css";
 
@@ -11,6 +13,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = (e) => {
@@ -30,6 +33,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const res = await API.post("/auth/login", { email, password });
       if (res.data.token) {
@@ -39,8 +43,16 @@ const Login = () => {
       }
     } catch {
       alert("Login failed");
+    } finally {
+      setIsLoading(false);
     }
   };
+  if (isLoading)
+    return (
+      <div className="loading-overlay">
+        <Mosaic color="#6c757d" size="medium" text="Loading..." textColor="" />
+      </div>
+    );
 
   return (
     <div className="container-fluid p-0">
@@ -135,7 +147,6 @@ const Login = () => {
                 </button>
               </div>
             </form>
-            
           </div>
         </div>
 
