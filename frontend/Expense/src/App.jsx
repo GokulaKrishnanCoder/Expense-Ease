@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import {BrowserRouter as Router,Routes,Route,Navigate} from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import HomePage from './pages/HomePage';
 
 const clientId = import.meta.env.VITE_CLIENT_ID ;
 const App = () => {
@@ -16,7 +17,8 @@ const App = () => {
       <GoogleOAuthProvider clientId={clientId}>
         <ToastContainer/>
       <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path ="/" element={<HomePage/>}/>
+          {/* <Route path="/" element={<Navigate to="/login" replace />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/*" element={<Sidebar />} />
