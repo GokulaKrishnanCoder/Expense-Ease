@@ -95,6 +95,19 @@ const ThisMonth = () => {
     "#ff5722",
   ];
 
+  if (incomeData.length === 0 && expenseData.length === 0) {
+  return (
+    <div
+      className="card mx-1 p-4 w-100 d-flex align-items-center justify-content-center"
+      style={{ height: "300px" }}
+    >
+      <h5>{monthName} Month Transactions</h5>
+      <p>No transactions found for this month.</p>
+    </div>
+  );
+}
+
+
   const doubleDoughnutData = {
     labels: [...incomeLabels, ...expenseLabels],
     datasets: [

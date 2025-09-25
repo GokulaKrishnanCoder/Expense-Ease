@@ -250,3 +250,12 @@ input::placeholder {
     width: 100%;
   }
 }
+
+.login-button {
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.login-button:hover {
+  transform: scale(1.03); /* Slightly enlarge the button */
+  filter: brightness(1.2); /* Make the button a bit brighter */
+}

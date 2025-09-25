@@ -99,7 +99,7 @@ const Expenses = () => {
         </div>
       )}
       <div className="row mb-3">
-        <h5 className="col  ">Manage Your Transactions</h5>
+        <h5 className="col mt-2  ">Manage Your Transactions</h5>
 
         <div className=" col-md-4 offset-md-3">
           <input
