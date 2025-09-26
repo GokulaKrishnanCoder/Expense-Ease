@@ -1,22 +1,14 @@
-import React, { use, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "../App.css";
-
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, Routes, Route } from "react-router-dom";
 import RecentExpenses from "../components/RecentExpenses";
 import Graph from "../components/Graph";
 import Expenses from "../pages/Expenses";
-
 import ThisMonth from "../components/ThisMonth";
+import Bot from "../components/Bot";
 import Settings from "./Settings";
 import Summary from "./Summary";
-import plus from "../assets/plus.png";
 import CreateTransaction from "./CreateTransaction";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-} from "react-router-dom";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -30,14 +22,19 @@ const Sidebar = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [activeItem, setActiveItem] = useState(pathToMenu[location.pathname]);
-  const [userName,setUserName] = useState("");
+  const [userName, setUserName] = useState("");
 
   const user = JSON.parse(localStorage.getItem("user"));
-  const [profile, setProfile] = useState(user?.profilePic || "https://res.cloudinary.com/ddvcavhob/image/upload/v1751982033/boy_nhzrc3.png");
+  const [profile, setProfile] = useState(
+    user?.profilePic ||
+      "https://res.cloudinary.com/ddvcavhob/image/upload/v1751982033/boy_nhzrc3.png"
+  );
 
   const menuItems = ["Dashboard", "Expenses", "Summary", "Settings"];
-
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // Bot state
+  const [showBot, setShowBot] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -55,7 +52,7 @@ const Sidebar = () => {
       const updatedUser = JSON.parse(localStorage.getItem("user"));
       setProfile(updatedUser?.profilePic);
       setUserName(updatedUser?.name);
-    }, 500); // check every 0.5s
+    }, 500);
     return () => clearInterval(interval);
   }, []);
 
@@ -73,12 +70,78 @@ const Sidebar = () => {
       case "Settings":
         navigate("/settings");
         break;
+      default:
+        break;
     }
   };
 
+  // Show + button only on dashboard and expenses
+  const showAddButton =
+    location.pathname === "/dashboard" || location.pathname === "/allexpenses";
+
   return (
     <>
-      {/* for mobile */}
+      {/* Bot Popup (always visible) */}
+      {showBot && <Bot onClose={() => setShowBot(false)} />}
+
+      {/* Floating Action Buttons (desktop) */}
+      {!isMobile && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 32,
+            right: 32,
+            zIndex: 3000,
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+            alignItems: "flex-end",
+          }}
+        >
+          {showAddButton && (
+            <button
+              className="floating-bot-btn"
+              onClick={() => setShowModal(true)}
+              title="Add Transaction"
+              style={{
+                marginBottom: "0px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <i className="bi bi-plus-lg"></i>
+            </button>
+          )}
+          <button
+            className="floating-bot-btn"
+            onClick={() => setShowBot((v) => !v)}
+            aria-label="Open chatbot"
+            title="Chat with ExpenseEase AI"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <i className="bi bi-robot"></i>
+          </button>
+        </div>
+      )}
+
+      {/* Floating Bot Button (mobile) */}
+      {isMobile && (
+        <button
+          className="floating-bot-btn"
+          onClick={() => setShowBot((v) => !v)}
+          aria-label="Open chatbot"
+          title="Chat with ExpenseEase AI"
+          style={{ position: "fixed", bottom: 80, right: 24, zIndex: 3000 }}
+        >
+          <i className="bi bi-robot"></i>
+        </button>
+      )}
+
       {/* Bottom navigation bar for mobile */}
       <div
         className="mobile-downbar d-md-none d-flex justify-content-around align-items-center bg-dark text-white py-1"
@@ -114,8 +177,10 @@ const Sidebar = () => {
           />
         </span>
       </div>
+
+      {/* Top bar for mobile */}
       <div
-        className="mobile-upbar d-md-none d-flex  align-items-left bg-dark text-white p-2"
+        className="mobile-upbar d-md-none d-flex align-items-left bg-dark text-white p-2"
         style={{
           position: "fixed",
           top: 0,
@@ -126,6 +191,7 @@ const Sidebar = () => {
       >
         Expense Ease
       </div>
+
       {/* for desktop */}
       <div className="d-flex sidebar-container">
         <div className="sidebar bg-dark text-white d-md-flex flex-column d-none d-md-block p-4">
@@ -138,7 +204,6 @@ const Sidebar = () => {
               height="60"
             />
             <h5 className="mt-2">{userName}</h5>
-            
           </div>
 
           <ul className="nav flex-column sidebar-nav">
@@ -159,20 +224,10 @@ const Sidebar = () => {
               </li>
             ))}
           </ul>
-          <div className="text-center mt-auto " style={{fontSize:"12px"}}>{user.email}</div>
+          <div className="text-center mt-auto " style={{ fontSize: "12px" }}>
+            {user.email}
+          </div>
         </div>
-        
-
-        {(location.pathname === "/dashboard" ||
-          location.pathname === "/allexpenses") &&
-          !isMobile && (
-            <button
-              className="floating-button"
-              onClick={() => setShowModal(true)}
-            >
-              <img src={plus} alt="Add Transation" className="plus-icon" />
-            </button>
-          )}
 
         {showModal && (
           <div className="modal-overlay">
