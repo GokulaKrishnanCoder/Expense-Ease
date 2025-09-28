@@ -100,7 +100,7 @@ const Sidebar = () => {
         >
           {showAddButton && (
             <button
-              className="floating-bot-btn"
+              className="floating-add-btn"
               onClick={() => setShowModal(true)}
               title="Add Transaction"
               style={{
@@ -136,7 +136,7 @@ const Sidebar = () => {
           onClick={() => setShowBot((v) => !v)}
           aria-label="Open chatbot"
           title="Chat with ExpenseEase AI"
-          style={{ position: "fixed", bottom: 80, right: 24, zIndex: 3000 }}
+          style={{ position: "fixed", bottom: 50, right: 13, zIndex: 3000 }}
         >
           <i className="bi bi-robot"></i>
         </button>
@@ -246,17 +246,19 @@ const Sidebar = () => {
             <Route
               path="/dashboard"
               element={
-                <>
-                  <Graph />
-                  <div className="row g-3 ">
-                    <div className="col-12 col-md-8 d-flex">
+                <div className="container-fluid px-1 mt-2">
+                  <Graph key={isMobile ? "mobile" : "desktop"} />
+                  <div className="row g-3">
+                    <div className="col-12 col-md-8 d-flex align-items-stretch">
                       <RecentExpenses />
                     </div>
-                    <div className=" col-12 col-md-4 d-flex align-items-center justify-content-center">
-                      <ThisMonth />
+                    <div className="col-12 col-md-4 d-flex align-items-center justify-content-center">
+                      <div style={{ width: "100%", maxWidth: 350 }}>
+                        <ThisMonth />
+                      </div>
                     </div>
                   </div>
-                </>
+                </div>
               }
             />
 

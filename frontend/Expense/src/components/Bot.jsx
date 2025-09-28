@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Initialize the Generative AI model with your API key
@@ -9,6 +9,8 @@ const Bot = ({ onClose }) => {
   const [messages, setMessages] = useState([]); // Store conversation history
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  
 
   const handleAsk = async (e) => {
     e.preventDefault();
@@ -28,7 +30,7 @@ const Bot = ({ onClose }) => {
       
       setMessages([...newMessages, { role: "bot", text: text || "No response." }]);
     } catch (err) {
-      console.error("API Error:", err); // Log the actual error for debugging
+      console.error("API Error:", err);
       setError("Sorry, I couldn't process your request.");
     } finally {
       setLoading(false);
@@ -44,7 +46,7 @@ const Bot = ({ onClose }) => {
 
       <div className="bot-body p-3" style={{ height: '300px', overflowY: 'auto' }}>
         {messages.map((msg, index) => (
-          <div key={index} className={`mb-2 p-2 rounded ${msg.role === 'user' ? 'bg-primary text-white ms-auto' : 'bg-light text-dark'}`} style={{ maxWidth: '80%' }}>
+          <div key={index} className={`mb-2 p-2 rounded ${msg.role === 'user' ? 'bg-primary text-white ms-auto' : 'bg-dark text-light'}`} style={{ maxWidth: '80%' }}>
             {msg.text}
           </div>
         ))}

@@ -270,8 +270,8 @@ input::placeholder {
   color: #fff;
   border: none;
   border-radius: 50%;
-  width: 56px;
-  height: 56px;
+  width: 45px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -319,5 +319,38 @@ input::placeholder {
   }
   .bot-header {
     border-radius: 0.7rem 0.7rem 0 0 !important;
+  }
+}
+.floating-add-btn {
+  position: fixed;
+  bottom: 85px; /* place above bot button */
+  right: 24px;
+  z-index: 3000;
+  background: #393e46;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  cursor: pointer;
+  font-size: 2rem;
+  transition: background 0.2s;
+}
+.floating-add-btn:hover {
+  background: #222831;
+}
+
+@media (max-width: 767px) {
+  .col-md-4.d-flex.align-items-center.justify-content-center {
+    justify-content: stretch !important;
+    align-items: stretch !important;
+  }
+  .col-md-4 > div {
+    width: 100% !important;
+    max-width: 100% !important;
   }
 }
